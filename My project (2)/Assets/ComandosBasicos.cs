@@ -16,6 +16,12 @@ public class ComandosBasicos : MonoBehaviour
 
     private SpriteRenderer sprite;
 
+    public GameObject projetil;
+
+    public Transform localdisparo;
+
+
+
     void Start()
     {
         rbPlayer = GetComponent<Rigidbody2D>();
@@ -50,7 +56,15 @@ public class ComandosBasicos : MonoBehaviour
             sprite.flipX = true;//aperta a seta para a esquerda o boneco vai para a esquerda
         }
 
+        if (Input.GetButtonDown("Fire1"))
+        {
+            anim.SetTrigger("attack");
+            GameObject temp = Instantiate(projetil);
 
+            temp.transform.position = localdisparo.transform.position; 
+
+
+        }
     }
 
     private void FixedUpdate()
