@@ -16,17 +16,22 @@ public class ComandosBasicos : MonoBehaviour
 
     private SpriteRenderer sprite;
 
-    public GameObject projetil;
+    public GameObject projetil;//Criar uma variável para instanciar o objeto na cena
 
-    public Transform localdisparo;
+    public Transform localDsiparo;
 
+    private Transform flip;
 
+    public bool VerificarDirec;
+
+    public float VelocidadeTiro;
 
     void Start()
     {
         rbPlayer = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+
     }
 
     // Update is called once per frame
@@ -47,24 +52,37 @@ public class ComandosBasicos : MonoBehaviour
 
         anim.SetBool("jump", sensor);
 
-        if (movimentoX > 0)
-        {
-            sprite.flipX = false; //aperta a seta para a direita o boneco vai para a direita
-        }
-        else if (movimentoX < 0)
-        {
-            sprite.flipX = true;//aperta a seta para a esquerda o boneco vai para a esquerda
-        }
-
         if (Input.GetButtonDown("Fire1"))
         {
             anim.SetTrigger("attack");
+
             GameObject temp = Instantiate(projetil);
 
-            temp.transform.position = localdisparo.transform.position; 
+            temp.transform.position = localDsiparo.transform.position;
+
+            temp.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(VelocidadeTiro, 0);
+
+            Destroy(temp.gameObject, 3);
+        }
+
+        if (movimentoX > 0 && VerificarDirec == true)
+        {
+
+
+            VirarPersonagem();
+            //aperta a seta para a direita o boneco vai para a direita
 
 
         }
+        else if (movimentoX < 0 && VerificarDirec == false)
+        {
+
+            VirarPersonagem();
+            //aperta a seta para a esquerda o boneco vai para a esquerda
+
+
+        }
+
     }
 
     private void FixedUpdate()
@@ -73,4 +91,19 @@ public class ComandosBasicos : MonoBehaviour
         sensor = Physics2D.OverlapCircle(posicaoSensor.position, 0.1f, layerChao);
 
     }
+
+    public void VirarPersonagem()
+    {
+
+        VerificarDirec = !VerificarDirec;
+
+        float x = transform.localScale.x * -1;
+
+        transform.localScale = new Vector3(x, transform.localScale.y, transform.localScale.z);
+
+        VelocidadeTiro *= -1;
+
+    }
+
+
 }
