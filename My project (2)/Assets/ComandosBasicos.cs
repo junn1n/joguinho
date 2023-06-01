@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
 
 public class ComandosBasicos : MonoBehaviour
 {
@@ -25,6 +28,12 @@ public class ComandosBasicos : MonoBehaviour
     public bool VerificarDirec;
 
     public float VelocidadeTiro;
+
+    public TextMeshProUGUI textCoin;
+
+    private int quantidadeMoedas;
+
+    public Image imageVida;
 
     void Start()
     {
@@ -106,4 +115,24 @@ public class ComandosBasicos : MonoBehaviour
     }
 
 
+    private void OnTriggerEnter2D(Collider2D Collision)
+    {
+        if (Collision.gameObject.tag == "coin")
+
+        {
+            quantidadeMoedas += 1;
+
+            textCoin.text = quantidadeMoedas.ToString();
+            Destroy(Collision.gameObject);
+        }
+
+        if (Collision.gameObject.tag == "megacoin")
+
+        {
+            quantidadeMoedas += 5;
+
+            textCoin.text = quantidadeMoedas.ToString();
+            Destroy(Collision.gameObject);
+        }
+    }
 }
